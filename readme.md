@@ -4,6 +4,7 @@ AutoInstall is a program under the GPL 3.0 license for quick installation of pro
 Build and install automatically
 
 Open a terminal and enter the following commands
+
 `su root`
 
 `chmod +x install.sh`
@@ -14,6 +15,7 @@ Open a terminal and enter the following commands
 Build and install manually
 
 Open a terminal and enter the following commands:
+
 `su root`
 
 `pacman -S gcc sudo git #for arch linux based systems`
