@@ -3,19 +3,19 @@ AutoInstall is a program under the GPL 3.0 license for quick installation of pro
 
 Build and install automatically
 Open a terminal and enter the following commands
-`{bash} {su root}«`
-`{bash} {chmod +x install.sh}«`
-`{bash} {./install.sh}«`
+`su root`
+`chmod +x install.sh`
+`./install.sh`
 
 Build and install manually
 Open a terminal and enter the following commands:
-`{bash} {su root}«`
-`{bash} {pacman -S gcc sudo git #for arch linux based systems}«`
-`{bash} {apt update -y && apt install gcc sudo git #for debian based systems}«`
-`{bash} {exit}«`
-`{bash} {gcc -lstdc++ main.cpp -o bin/main}«`
-`{bash} {sudo mv bin/main /bin/autoinstall}«`
+`su root`
+`pacman -S gcc sudo git #for arch linux based systems`
+`apt update -y && apt install gcc sudo git #for debian based systems`
+`exit`
+`gcc -lstdc++ main.cpp -o bin/main`
+`sudo mv bin/main /bin/autoinstall`
 
 How to run
 To run autoinstall open a terminal and enter the following command
-`{bash} {autoinstall}«`
+`autoinstall`
