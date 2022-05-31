@@ -2,6 +2,7 @@ Description
 AutoInstall is a program under the GPL 3.0 license for quick installation of programs from repositories of systems based on Arch Linux, Debian and the like. Very convenient when reinstalling the system.
 
 Build and install automatically
+
 Open a terminal and enter the following commands
 `su root`
 
@@ -11,6 +12,7 @@ Open a terminal and enter the following commands
 
 
 Build and install manually
+
 Open a terminal and enter the following commands:
 `su root`
 
@@ -26,6 +28,7 @@ Open a terminal and enter the following commands:
 
 
 How to run
+
 To run autoinstall open a terminal and enter the following command
 
 `autoinstall`
