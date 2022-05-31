@@ -22,12 +22,12 @@ whoami="$(whoami)"
 
 if [[ "$whoami" = "root" ]]; then
     #pacman (arch)
-        pacman -Sy gcc sudo
+        pacman -Sy gcc sudo git
         clear
 
     #apt-get (debian)
         apt-get update -y
-        apt-get install gcc sudo
+        apt-get install gcc sudo git
         clear 
 
         printf "#----------------------#\n"
