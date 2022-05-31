@@ -26,6 +26,10 @@ Open a terminal and enter the following commands:
 
 `exit`
 
+`git clone https://github.com/mrybs/auto-install`
+
+`cd auto-install`
+
 `gcc -lstdc++ main.cpp -o bin/main`
 
 `sudo mv bin/main /bin/autoinstall`
