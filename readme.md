@@ -3,7 +3,7 @@ AutoInstall is a program under the GPL 3.0 license for quick installation of pro
 
 Build and install automatically
 
-Open a terminal and enter the following commands
+Open a terminal and enter the following commands:
 
 `su root`
 
@@ -31,6 +31,6 @@ Open a terminal and enter the following commands:
 
 How to run
 
-To run autoinstall open a terminal and enter the following command
+To run autoinstall open a terminal and enter the following command:
 
 `autoinstall`
