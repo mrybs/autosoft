@@ -1,7 +1,9 @@
-Description
+#AutoInstall
+
+##Description
 AutoInstall is a program under the GPL 3.0 license for quick installation of programs from repositories of systems based on Arch Linux, Debian and the like. Very convenient when reinstalling the system.
 
-Build and install automatically
+##Build and install automatically
 
 Open a terminal and enter the following commands:
 
@@ -12,7 +14,7 @@ Open a terminal and enter the following commands:
 `./install.sh`
 
 
-Build and install manually
+##Build and install manually
 
 Open a terminal and enter the following commands:
 
@@ -29,7 +31,7 @@ Open a terminal and enter the following commands:
 `sudo mv bin/main /bin/autoinstall`
 
 
-How to run
+##How to run
 
 To run autoinstall open a terminal and enter the following command:
 
