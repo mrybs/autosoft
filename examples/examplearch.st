@@ -1,6 +1,6 @@
-Base System
+Base System;Linux
 base base-devel
-Linux 
+Linux;Base System 
 linux linux-headers linux-firmware
 Network Manager
 networkmanager

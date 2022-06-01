@@ -3,25 +3,26 @@
 #include <fstream>
 using namespace std;
 
-string* parse(string filepath);
+void parse(string filepath);
 long getFileLength(string filepath);
 void setPackageManager();
 
 string PACKAGEMANAGER = "";
 long stFileLength = 0;
+string* packages;
+string* conflictPackages;
 
 int main(){
     string st = "";
-    string* packages;
     string packagesToInstall;
     bool install = false;
     string choice = "";
 
-    system("clear");
+    //system("clear");
 
     setPackageManager(); //Setting packages manager
 
-    system("clear");
+    //system("clear");
 
     //Preparsing file
     cout << "Write *.st file name\n# "; //Getting filename
@@ -31,20 +32,20 @@ int main(){
         cout << "\033[0;31mNo such file or directory, exit";
         return 1;
     }
-    packages = parse(st);
+   parse(st);
 
     //Parsing file and preinstalling packages
-    for(int i = 0; i < stFileLength; i+=2){
+    for (int i = 0; i < stFileLength; i+=2){
         //Getting consent for the installation a group of packages
         system("clear");
         cout << "Are you sure to install " << packages[i] << "(" << packages[i+1] << ")? [y/n]\n# "; 
         cin >> choice; 
         string vars[12] = {"Y", "y", "yes", "Yes", "YEs", "YeS", "YES", "yEs", "yES", "yeS"}; //Variants of YES
-        for(int i = 0; i < 12; i++){
-            if(choice == vars[i]){
+        for (int i = 0; i < 12; i++){
+            if (choice == vars[i]){
                 install = true;
                 break;}}
-        if(install){
+        if (install){
             packagesToInstall = packagesToInstall + packages[i+1] + "\n";
             cout << "YES.   ";
         }else{
@@ -53,8 +54,8 @@ int main(){
         install = false;
     }
     size_t pos = 0;
-    while( (pos = packagesToInstall.find("\n", pos)) != string::npos ) packagesToInstall.replace(pos, 1, " ");
-    if(packagesToInstall == ""){
+    while ((pos = packagesToInstall.find("\n", pos)) != string::npos ) packagesToInstall.replace(pos, 1, " ");
+    if (packagesToInstall == ""){
         system("clear");
         cout << "\n\033[0;31mUser did not select the packages to install, exit";
         return 2;
@@ -80,16 +81,31 @@ int main(){
     return 0;
 }
 
-string* parse(string filepath){
+void parse(string filepath){
     stFileLength = getFileLength(filepath);
-    string* result = new string[stFileLength];
+    string* results = new string[stFileLength];
+    string* conflicts = new string[stFileLength];
     string line;
     ifstream file(filepath);
     for (int i = 0; getline(file, line); i++){
-        result[i] = line;
+        const char * endOfLine = ";";
+        string cache1 = line;
+        string main;
+    
+        for (int k = 0; k < cache1.length(); k++)
+            if (k != cache1.length())
+                if (cache1[k] != *endOfLine) {main += cache1[k];}
+                else break;
+        results[i] = main;
+
+        string cache2 = line;
+        string::size_type pos2{};   // позиция разделителя в строке
+        pos2 = cache2.find_first_of(endOfLine, pos2);  // ищем первый символ, начиная с pos = 0, являющийся разделителем
+        cache2.erase(0, pos2+1); // удаляем все что перед найденным символом
+        conflicts[i] = cache2;
     }
     file.close();
-    return result;
+    packages = results;
 }
 
 long getFileLength(string filepath){ //Getting file lenght
@@ -115,15 +131,15 @@ void setPackageManager(){ //Setting packages manager
             if(choice == vars[i]){
                 man = true;
                 break;}}
-        if(man) PACKAGEMANAGER = "sudo pacman -Syy";
-        if(!man){
+        if (man) PACKAGEMANAGER = "sudo pacman -Syy";
+        if (!man){
             string root = "";
             cout << "Write root path\n# ";
             cin >> root;
             PACKAGEMANAGER = "sudo pacstrap " + root;
         }
-    }else if(file1.is_open() && !file2.is_open()) {PACKAGEMANAGER = "sudo pacman -Syy";}
-    else if(!file1.is_open() && file2.is_open()) {
+    }else if (file1.is_open() && !file2.is_open()) {PACKAGEMANAGER = "sudo pacman -Syy";}
+    else if (!file1.is_open() && file2.is_open()) {
         string root = "";
         cout << "Write root path\n# ";
         cin >> root;
