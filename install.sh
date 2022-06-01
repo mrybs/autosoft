@@ -38,7 +38,7 @@ if [[ "$whoami" = "root" ]]; then
 
         printf "\033[0m" #sets default color
 
-        gcc -lstdc++ main.cpp -o bin/main
+        gcc -lstdc++ main.cpp rarelyusedfuns.cpp -o bin/main
 
     mv bin/main /bin/autoinstall
     printf "\nWrite\nautoinstall\nfor run program\n\n"
