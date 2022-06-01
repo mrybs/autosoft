@@ -3,16 +3,17 @@
 #include <fstream>
 using namespace std;
 
-void parse(string filepath);
-long getFileLength(string filepath);
-void setPackageManager();
+void preparse (string filepath);
+long getFileLength (string filepath);
+void setPackageManager ();
 
 string PACKAGEMANAGER = "";
 long stFileLength = 0;
 string* packages;
-string* conflictPackages;
+string* conflicts;
+//string* conflictPackages;
 
-int main(){
+int main (){
     string st = "";
     string packagesToInstall;
     bool install = false;
@@ -32,17 +33,23 @@ int main(){
         cout << "\033[0;31mNo such file or directory, exit";
         return 1;
     }
-   parse(st);
+    preparse(st);
 
     //Parsing file and preinstalling packages
     for (int i = 0; i < stFileLength; i+=2){
+
+        for(int k = 0; k < stFileLength; k++){
+            if(conflicts[k] != "" && conflicts[k][0] != ' ' && k%2!=1){
+                cout << "(1)" << packages[k] << " conflicts with (2)" << conflicts[k] << "\n";
+            }
+        }
         //Getting consent for the installation a group of packages
-        system("clear");
+        //system("clear");
         cout << "Are you sure to install " << packages[i] << "(" << packages[i+1] << ")? [y/n]\n# "; 
         cin >> choice; 
         string vars[12] = {"Y", "y", "yes", "Yes", "YEs", "YeS", "YES", "yEs", "yES", "yeS"}; //Variants of YES
-        for (int i = 0; i < 12; i++){
-            if (choice == vars[i]){
+        for (int k = 0; k < 12; k++){
+            if (choice == vars[k]){
                 install = true;
                 break;}}
         if (install){
@@ -70,6 +77,7 @@ int main(){
                 break;}}
 
     int installResult = 0;
+
     //Installing packages
     if (install) {
         system("clear");
@@ -81,10 +89,10 @@ int main(){
     return 0;
 }
 
-void parse(string filepath){
+void preparse (string filepath){
     stFileLength = getFileLength(filepath);
-    string* results = new string[stFileLength];
-    string* conflicts = new string[stFileLength];
+    packages = new string[stFileLength];
+    conflicts = new string[stFileLength];
     string line;
     ifstream file(filepath);
     for (int i = 0; getline(file, line); i++){
@@ -96,19 +104,18 @@ void parse(string filepath){
             if (k != cache1.length())
                 if (cache1[k] != *endOfLine) {main += cache1[k];}
                 else break;
-        results[i] = main;
+        packages[i] = main;
 
         string cache2 = line;
-        string::size_type pos2{};   // позиция разделителя в строке
-        pos2 = cache2.find_first_of(endOfLine, pos2);  // ищем первый символ, начиная с pos = 0, являющийся разделителем
-        cache2.erase(0, pos2+1); // удаляем все что перед найденным символом
+        string::size_type pos2{};
+        pos2 = cache2.find_first_of(endOfLine, pos2);
+        cache2.erase(0, pos2+1);
         conflicts[i] = cache2;
     }
     file.close();
-    packages = results;
 }
 
-long getFileLength(string filepath){ //Getting file lenght
+long getFileLength (string filepath){ //Getting file lenght
     long i = 0;
     string cache; //Unuseless variable
     ifstream file(filepath);
@@ -116,7 +123,7 @@ long getFileLength(string filepath){ //Getting file lenght
     return i;
 }
 
-void setPackageManager(){ //Setting packages manager
+void setPackageManager (){ //Setting packages manager
     //Arch linux based 
     ifstream file1("/bin/pacman");
     ifstream file2("/bin/pacstrap");
