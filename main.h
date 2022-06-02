@@ -24,6 +24,6 @@ void parse (string filepath);
 long getFileLength (string filepath);
 string setPackageManager ();
 void init (string Data);
-long stringLinesCounter(string str);
+//long stringLinesCounter(string str);
 
 #endif //MAINH

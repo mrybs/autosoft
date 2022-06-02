@@ -9,13 +9,13 @@ long stFileLength = 0;
 //conflicts* confs = new conflicts();
 string packagesToInstall;
 bool* use;
-string dataed;
+//string dataed;
 string* name1;
 string* packages1;
 string* name2;
 string* packages2;
 
-long stringLinesCounter(string str){
+/*long stringLinesCounter(string str){
     try{
         long l = 0;
         size_t pos = 0;
@@ -25,7 +25,7 @@ long stringLinesCounter(string str){
         cout << "SLC error";
     }
     return 0;
-}
+}*/
 
 
 int main (){
@@ -101,13 +101,11 @@ int main (){
 
 void parse (string filepath){
     try{
-        dataed = ""; 
-        string cache = "";
-        ifstream file(filepath);
-        while(getline(file, cache)){ 
-            dataed += cache;
-        }
-        long linesCount = stringLinesCounter(dataed);
+        
+        long linesCount = getFileLength(filepath);
+
+        
+        long i = 0;
 
         packages1 = new string[linesCount/2];
         name1 = new string[linesCount/2];
@@ -119,20 +117,18 @@ void parse (string filepath){
             name1[i] = "";
             packages2[i] = "";
             name2[i] = "";
-        }
-        for(int i = 0; i < linesCount/2; i++){
             use[i] = false;
         }
 
-        string line;
-        vector<string> split_vector;
-        split( split_vector, dataed, is_any_of("\n"), token_compress_on );
-        long i = 0;
         long j = 0;
+        //dataed = ""; 
+        string cache = "";
+        string line;
+        ifstream file(filepath);
 
-
-        while(getline(file, line)){ 
-            string cache1 = line;
+        while(getline(file, cache)){ 
+            //dataed += cache;
+             string cache1 = line;
             string main;
         
             for (int k = 0; k < cache1.length(); k++)
@@ -150,7 +146,7 @@ void parse (string filepath){
             i++;
             cout << "ping - ";
         }
-        file.close(); 
+
 
         for(int i = 0; i < linesCount/2; i++){
             for(int k = 0; k < linesCount/2; k++){
@@ -184,5 +180,3 @@ void parse (string filepath){
         }
     }catch(std::exception e) {cout << "parce error";}
 }
-
-
