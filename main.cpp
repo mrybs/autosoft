@@ -27,37 +27,40 @@ int main (){
     cin >> st;
     ifstream file(st);
     if (!file.is_open()){
-        cout << "\033[0;31mNo such file or directory, exit";
+        cout << "\033[0;31mNo such file or directory, exit\n";
+        if (DEBUG) cout << "The program ended with code 1";
         return 1;
     }
     stFileLength = getFileLength(st);
     file.close();
     parse(st);
+    if (DEBUG) cout << "File parced, no exceptions\n";
     //packages = confs -> packages1;
 
     //Parsing file and preinstalling packages
     for (int i = 0; i < stFileLength/2; i+=2){
-        
+        if (DEBUG) cout << "The user having interview " << i << "... \n";
         //Getting consent for the installation a group of packages
-        if(packages1[i] != ""){
-            cout << "Are you sure to install " << packages1[i] << "(" << packages1[i+1] << ")? [y/n]\n# "; 
-            cin >> choice; 
-            string vars[12] = {"Y", "y", "yes", "Yes", "YEs", "YeS", "YES", "yEs", "yES", "yeS"}; //Variants of YES
-            for (int k = 0; k < 12; k++)
-                if (choice == vars[k]){
-                    install = true; break;}
-            if (install){
-                packagesToInstall = packagesToInstall + packages1[i+1] + "\n";
-                cout << "YES.   ";
-            }else cout << "NO.    ";
-        }
+        cout << "Are you sure to install " << packages1[i] << "(" << packages1[i+1] << ")? [y/n]\n# "; 
+        cin >> choice; 
+        string vars[12] = {"Y", "y", "yes", "Yes", "YEs", "YeS", "YES", "yEs", "yES", "yeS"}; //Variants of YES
+        for (int k = 0; k < 12; k++)
+            if (choice == vars[k]){
+                install = true; break;}
+        if (install){
+            packagesToInstall = packagesToInstall + packages1[i+1] + "\n";
+            cout << "YES.   ";
+        }else cout << "NO.    ";
         install = false;
     }
+    if (DEBUG) cout << "The user has interviewed\n";
+
     size_t pos = 0;
     while ((pos = packagesToInstall.find("\n", pos)) != string::npos ) packagesToInstall.replace(pos, 1, " ");
     if (packagesToInstall == ""){
         CLEAR;
         cout << "\n\033[0;31mUser did not select the packages to install, exit";
+        if (DEBUG) cout << "The program ended with code 2";
         return 2;
     }
     CLEAR;
@@ -77,13 +80,16 @@ int main (){
         string command = (string)PACKAGEMANAGER + " " + packagesToInstall; 
         installResult = system(command.c_str());
         if(installResult == 0){CLEAR; cout << "\033[;32mDone.\n";} 
-        else {cout << "\033[;31mError";}
+        else {cout << "\033[;31mError\n";}
+        if(DEBUG) cout << "The package manager did not returned code 0\n";
     }
-    return 0;
+    if (DEBUG) cout << "The program ended with code " << installResult << endl;
+    return installResult;
 }
 
 void parse (string filepath){
     try{
+        if (DEBUG) cout << "File parsing begins\n";
         long linesCount = getFileLength(filepath);
         long i = 0;
 
@@ -126,7 +132,7 @@ void parse (string filepath){
             cache2.erase(0, pos2+1);
             if(i%2==1) {name2[j] = cache2; j++;}
             i++;
-            if (DEBUG) cout << "File parsing 2 - cycle " << i << "/" << linesCount << "\n";
+            if (DEBUG) cout << "File parsing 2 - cycle " << i << "/" << linesCount << endl;
         }
 
 
@@ -135,7 +141,7 @@ void parse (string filepath){
                 if(name1[g] == name2[g]){
                     packages2[k] = packages1[g];
                     use[k] = true;
-                    if (DEBUG) cout << "File parsing 3 - cycle " << g+1 << "-" << k+1 << "/" << linesCount/2 << "-" << linesCount/2 << "\n";
+                    if (DEBUG) cout << "File parsing 3 - cycle " << g+1 << "-" << k+1 << "/" << linesCount/2 << "-" << linesCount/2 << endl;
                 }
             }
         }
@@ -162,7 +168,7 @@ void parse (string filepath){
                     }
                 }
             }
-            if (DEBUG) cout << "File parsing 4 - cycle " << g+1 << "/" << linesCount/2 << "\n";
+            if (DEBUG) cout << "File parsing 4 - cycle " << g+1 << "/" << linesCount/2 << endl;
         }
     }catch(std::exception e) {cout << "File parsing error";}
 }
