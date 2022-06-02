@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 #include <boost/algorithm/string.hpp>
+#include <ctime>
 
 using namespace std;
 using namespace boost;
@@ -12,6 +13,7 @@ using namespace boost;
 //#define MAINH
 #define CLEAR system("")
 #define EOL ';'
+#define DEBUG true 
 
 //Variables
 
