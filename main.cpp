@@ -3,21 +3,41 @@
 //Variables
 string PACKAGEMANAGER = "";
 long stFileLength = 0;
-string* packages;
-string* conflicts;
-string* markedConflicts;
+//string* packages;
+//string* conflicts;
+//string* markedConflicts;
+//conflicts* confs = new conflicts();
+string packagesToInstall;
+bool* use;
+string dataed;
+string* name1;
+string* packages1;
+string* name2;
+string* packages2;
+
+long stringLinesCounter(string str){
+    try{
+        long l = 0;
+        size_t pos = 0;
+        while ((pos = dataed.find("\n")) != string::npos) {l++;}
+        return l;
+    }catch(std::exception e){
+        cout << "SLC error";
+    }
+    return 0;
+}
+
 
 int main (){
     string st = "";
-    string packagesToInstall;
     bool install = false;
     string choice = "";
 
-    //CLEAR;
+    CLEAR;
 
     PACKAGEMANAGER = setPackageManager(); //Setting packages manager
 
-    //CLEAR;
+    CLEAR;
 
     //Preparsing file
     cout << "Write *.st file name\n# "; //Getting filename
@@ -27,56 +47,24 @@ int main (){
         cout << "\033[0;31mNo such file or directory, exit";
         return 1;
     }
-    preparse(st);
+    stFileLength = getFileLength(st);
+    file.close();
+    parse(st);
+    //packages = confs -> packages1;
 
     //Parsing file and preinstalling packages
-    markedConflicts = new string[stFileLength];
-    for (int i = 0; i < stFileLength; i+=2){
-
-        for(int k = 0; k < stFileLength; k++){
-            if(conflicts[k] != "" && conflicts[k][0] != ' ' && markedConflicts[k] != conflicts[k] 
-            && markedConflicts[k] != packages[i] && packages[i] != ""){
-                while(true){
-                    try{
-                        cout << "(1)" << packages[k] << " conflicts with (2)" << conflicts[k] << "\n";
-                        markedConflicts[i] = packages[k];
-                        string choice;
-                        cout << "Select one package group(number), that you want to install. If you do not want to install these " << 
-                        "packages, select 3.\n# ";
-                        cin >> choice;
-                        if(atoi(choice.c_str()) <= 3 && atoi(choice.c_str()) >= 1){
-                            cout << choice << ".     ";
-                            if(atoi(choice.c_str()) == 1){
-                                packagesToInstall = packagesToInstall + packages[i+1] + "\n";
-                                packages[i] = "";
-                                conflicts[k] = "";
-                            }else if(atoi(choice.c_str()) == 2){
-                                packagesToInstall = packagesToInstall + conflicts[k+1] + "\n";
-                                packages[i] = "";
-                                conflicts[k] = "";
-                            }else {
-                                packages[i] = "";
-                                conflicts[k] = "";
-                            }
-                            break;
-                        }else cout << "You have selected a wrong value. Please, retry\n";
-                    } catch(exception e){
-                        cout << "You have not selected a number. Please, retry\n";
-                    }
-                }
-            }
-        }
+    for (int i = 0; i < stFileLength/2; i+=2){
+        
         //Getting consent for the installation a group of packages
-        CLEAR;
-        if(packages[i] != ""){
-            cout << "Are you sure to install " << packages[i] << "(" << packages[i+1] << ")? [y/n]\n# "; 
+        if(packages1[i] != ""){
+            cout << "Are you sure to install " << packages1[i] << "(" << packages1[i+1] << ")? [y/n]\n# "; 
             cin >> choice; 
             string vars[12] = {"Y", "y", "yes", "Yes", "YEs", "YeS", "YES", "yEs", "yES", "yeS"}; //Variants of YES
             for (int k = 0; k < 12; k++)
                 if (choice == vars[k]){
                     install = true; break;}
             if (install){
-                packagesToInstall = packagesToInstall + packages[i+1] + "\n";
+                packagesToInstall = packagesToInstall + packages1[i+1] + "\n";
                 cout << "YES.   ";
             }else cout << "NO.    ";
         }
@@ -85,7 +73,7 @@ int main (){
     size_t pos = 0;
     while ((pos = packagesToInstall.find("\n", pos)) != string::npos ) packagesToInstall.replace(pos, 1, " ");
     if (packagesToInstall == ""){
-        system("clear");
+        CLEAR;
         cout << "\n\033[0;31mUser did not select the packages to install, exit";
         return 2;
     }
@@ -111,28 +99,90 @@ int main (){
     return 0;
 }
 
-void preparse (string filepath){
-    stFileLength = getFileLength(filepath);
-    packages = new string[stFileLength];
-    conflicts = new string[stFileLength];
-    string line;
-    ifstream file(filepath);
-    for (int i = 0; getline(file, line); i++){
-        const char * endOfLine = ";";
-        string cache1 = line;
-        string main;
-    
-        for (int k = 0; k < cache1.length(); k++)
-            if (k != cache1.length()){
-                if (cache1[k] != *endOfLine) {main += cache1[k];}
-                else break;}
-        packages[i] = main;
+void parse (string filepath){
+    try{
+        dataed = ""; 
+        string cache = "";
+        ifstream file(filepath);
+        while(getline(file, cache)){ 
+            dataed += cache;
+        }
+        long linesCount = stringLinesCounter(dataed);
 
-        string cache2 = line;
-        string::size_type pos2{};
-        pos2 = cache2.find_first_of(endOfLine, pos2);
-        cache2.erase(0, pos2+1);
-        conflicts[i] = cache2;
-    }
-    file.close();
+        packages1 = new string[linesCount/2];
+        name1 = new string[linesCount/2];
+        packages2 = new string[linesCount/2];
+        name2 = new string[linesCount/2];
+        use = new bool[linesCount/2];
+        for(int i = 0; i < linesCount/2; i++){
+            packages1[i] = "";
+            name1[i] = "";
+            packages2[i] = "";
+            name2[i] = "";
+        }
+        for(int i = 0; i < linesCount/2; i++){
+            use[i] = false;
+        }
+
+        string line;
+        vector<string> split_vector;
+        split( split_vector, dataed, is_any_of("\n"), token_compress_on );
+        long i = 0;
+        long j = 0;
+
+
+        while(getline(file, line)){ 
+            string cache1 = line;
+            string main;
+        
+            for (int k = 0; k < cache1.length(); k++)
+                if (cache1[k] != EOL) {main += cache1[k];}
+                else break;
+            if(i%2==1){
+                name1[j] = main;
+            }else packages1[j] = main;
+
+            string cache2 = line;
+            string::size_type pos2{};
+            pos2 = cache2.find_first_of(EOL, pos2);
+            cache2.erase(0, pos2+1);
+            if(i%2==1) {name2[j] = cache2; j++;}
+            i++;
+            cout << "ping - ";
+        }
+        file.close(); 
+
+        for(int i = 0; i < linesCount/2; i++){
+            for(int k = 0; k < linesCount/2; k++){
+                if(name1[i] == name2[k]){
+                    packages2[k] = packages1[i];
+                    use[k] = true;
+                }
+            }
+        }
+
+        for(int i = 0; i < linesCount/2; i++){
+            if(name2[i] != "" && name2[0] != " "){
+                if(!use[i]){
+                    cout << "1) " << name1[i] << " conflicts with 2) " << name2[i] << "\nChoose one group [1/2]. " << 
+                    "If you do not want to choose which of these, then write 3";
+                    use[i] = true;
+                    string choice;
+                    cin >> choice;
+                    if(atoi(choice.c_str()) <= 3 && atoi(choice.c_str()) >= 1){
+                        cout << choice << ".     ";
+                        if(atoi(choice.c_str()) == 1){
+                            packagesToInstall = packagesToInstall + packages1[i] + "\n";
+                        }else if(atoi(choice.c_str()) == 2){
+                            packagesToInstall = packagesToInstall + packages2[i] + "\n";
+                        }else {
+                        }
+                        break;
+                    }else cout << "You have selected a wrong value. Please, retry\n";
+                }
+            }
+        }
+    }catch(std::exception e) {cout << "parce error";}
 }
+
+
