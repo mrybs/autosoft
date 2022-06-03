@@ -93,14 +93,14 @@ void parse (string filepath){
 
         if (DEBUG) cout << "File parsing 1 [";
         linesCount = getFileLength(filepath);
-        packages1 = new string[linesCount/2];
+        packages1 = new string[linesCount/2+1];
         name1 = new string[linesCount/2];
-        packages2 = new string[linesCount/2];
+        packages2 = new string[linesCount/2+1];
         name2 = new string[linesCount/2];
         use = new bool[linesCount/2];
-        for(int i = 0; i < linesCount; i++){
+        for(int i = 0; i < linesCount/2; i++){
             packages1[i] = "";
-            name1[i] = "";
+            name1[i] = "";//SIGSEGV when i=3 (FIXED)
             packages2[i] = "";
             name2[i] = "";
             use[i] = false;
@@ -111,20 +111,21 @@ void parse (string filepath){
         long j = 0;
         int i = 0;
         bool loob = true;
-        string cache = "";
+        //string cache = "";
         string line;
         ifstream file(filepath);
 
-        while(getline(file, cache)){ 
+        while(getline(file, line)){
             i++;
-            string cache1, cache2 = line;
+            string cache1 = line;
+            string cache2 = line;
             string main;
             for (int k = 0; k < cache1.length(); k++)
                 if (cache1[k] != EOL) {main += cache1[k];}
                 else break;
             if(loob){
                 name1[j] = main;
-            }else packages1[j] = main;
+            }else packages1[j] = main; //SIGSEGV when i=6 and loob=false
             
             string::size_type pos2{};
             pos2 = cache2.find_first_of(EOL, pos2);
@@ -148,8 +149,8 @@ void parse (string filepath){
         }
 
         for(int b = 0; b < linesCount/2; b++){
-            //if(name2[b] != "" && name2[b][0] != ' '){
-               // if(!use[b]){
+            if(name2[b] != "" && name2[b][0] != ' '){
+               if(!use[b]){
                     while(true){
                         cout << "1) " << name1[b] << " conflicts with 2) " << name2[b] << "\nChoose one group [1/2]. " << 
                         "If you do not want to choose which of these, then write 3";
@@ -166,8 +167,8 @@ void parse (string filepath){
                             break;
                         }else cout << "You have selected a wrong value. Please, retry\n";
                     }
-                //}
-            //}
+                }
+            }
             if (DEBUG) cout << "File parsing 4 - cycle " << b+1 << "/" << linesCount/2 << endl;
         }
     }catch(std::exception e) {cout << "File parsing error";}
