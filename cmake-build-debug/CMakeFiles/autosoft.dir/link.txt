@@ -1,0 +1,1 @@
+/usr/bin/g++ -g CMakeFiles/autosoft.dir/conflicts.cpp.o CMakeFiles/autosoft.dir/main.cpp.o CMakeFiles/autosoft.dir/rarelyusedfuns.cpp.o -o autosoft 

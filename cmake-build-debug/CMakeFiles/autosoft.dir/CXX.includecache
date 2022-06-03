@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/mrybs/Projects/autosoft/main.cpp
+main.h
+/home/mrybs/Projects/autosoft/main.h
+
+/home/mrybs/Projects/autosoft/main.h
+iostream
+-
+string
+-
+fstream
+-
+boost/algorithm/string.hpp
+-
+ctime
+-
+
