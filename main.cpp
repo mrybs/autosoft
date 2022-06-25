@@ -98,7 +98,7 @@ void parse (string filepath){
         packages2 = new string[linesCount/2+1];
         name2 = new string[linesCount/2];
         use = new bool[linesCount/2];
-        for(int i = 0; i < linesCount/2; i++){
+        for(int i = 0; i < linesCount/2; ++i){
             packages1[i] = "";
             name1[i] = "";//SIGSEGV when i=3 (FIXED)
             packages2[i] = "";
