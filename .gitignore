@@ -1,9 +1,3 @@
-bin/
-.st
-run
-conflicts.cpp
-cmake-build-debug/Testing/
-cmake-build-debug/autosoft
-cmake-build-debug/CMakeCache.txt
-cmake-build-debug/CMakeFiles/
-.idea/
+venv
+examples
+.idea__pycache__

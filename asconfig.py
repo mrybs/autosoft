@@ -1,3 +1,7 @@
+INSTALL = "sudo pacman -S"
+REMOVE = "sudo pacman -Sy"
+UPDATE = "sudo pacman -R"
+
 LANGUAGE = [
     ["File error",
      "Ошибка файла",

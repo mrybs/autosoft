@@ -1,44 +1,39 @@
 AUTOSOFT: ;init file
-?1 as "Linux"
+?1 as "Linux" ;first condition "Linux"
 Install linux ;installing linux and linux-headers
 Install linux-headers
-Remove linux-lts
-Remove linux-lts-headers
-Remove linux-zen
-Remove linux-zen-headers
 !
-?2 as "Base system"
+?2 as "Base system" ;second condition
 Install base
 Install base-devel
-Remove vi
 !
-?1 as "Linux Lts"
+?1 as "Linux Lts" ;also first condition. "Linux" and "Linux Lts" are conflicting
 Install linux-lts
 Install linux-lts-headers
-Remove linux
-Remove linux-headers
-Remove linux-zen
-Remove linux-zen-headers
 !
-?3 as "Text editors"
+?3 as "Text editors" ;condition "Text editors"
+;installing many text editors
 Install vi
 Install vim
-Install nvim
+Install neovim
 Install nano
 Install micro
 !
 ?4 as "Gimp"
 Install gimp
+Remove krita ;removing krita
 !
 ?4 as "Krita"
 Install krita
+Remove gimp
+?5 as "unreadable"
+;internal unreadable conditions are not separate conditons. Commands inside the internal condition
+;as commands of the parent condition of the internal condition
+Install telegram-desktop
+!
 !
 ?1 as "Linux zen"
 Install linux-zen
 Install linux-zen-headers
-Remove linux-lts
-Remove linux-lts-headers
-Remove linux
-Remove linux-headers
 !
 :AUTOSOFT
